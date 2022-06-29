@@ -1,2 +1,5 @@
 .vscode
 bin
+*.o
+*.sublime-project
+*.sublime-workspace
