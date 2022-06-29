@@ -11,6 +11,8 @@ public:
     Vector2f& getPos();
     SDL_Texture* getTex();
     SDL_Rect getCurrentFrame();
+    void setX(float p_x);
+    void setY(float p_y);
 private:
     Vector2f pos;
     SDL_Rect currentFrame;

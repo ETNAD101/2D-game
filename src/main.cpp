@@ -7,6 +7,7 @@
 #include "Math.hpp"
 #include "RenderWindow.hpp"
 #include "Entity.hpp"
+#include "Player.hpp"
 
 
 
@@ -22,9 +23,10 @@ int main(int argx, char *args[])
 
     RenderWindow window(WINDOW_TITLE, WIDTH, HEIGHT);
 
-    // Ground sprite spawner
+    
     SDL_Texture* grassBlock = window.loadTexture(GROUND_TEXTURE_PATH);
-
+    SDL_Texture* playerTexture = window.loadTexture(PLAYER_TEXTURE_PATH);
+    // Ground sprite spawner   
     std::vector<Entity> levelEntities;
 
     for(int x = 0;x < WIDTH/2; x += 32)
@@ -34,7 +36,10 @@ int main(int argx, char *args[])
         levelEntities.push_back(block);
         }
     }
+
+    Player player(Vector2f(0, 0), playerTexture);
       
+
     // Game Loop
     bool run = true;
     SDL_Event event;
@@ -52,6 +57,7 @@ int main(int argx, char *args[])
         {
             window.render(e);
         }
+        window.render(player);
         window.display();
     }
 
