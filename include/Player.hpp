@@ -10,6 +10,7 @@ class Player : public Entity
 {
 public:
 	Player(Vector2f p_pos, SDL_Texture* p_tex);
+	void move(Vector2f p_vel);
 private:
-	
+	Vector2f velocity;
 };

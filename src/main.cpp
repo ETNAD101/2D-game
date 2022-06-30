@@ -8,6 +8,7 @@
 #include "RenderWindow.hpp"
 #include "Entity.hpp"
 #include "Player.hpp"
+#include "Ground.hpp"
 
 
 
@@ -26,16 +27,11 @@ int main(int argx, char *args[])
     
     SDL_Texture* grassBlock = window.loadTexture(GROUND_TEXTURE_PATH);
     SDL_Texture* playerTexture = window.loadTexture(PLAYER_TEXTURE_PATH);
+    //SDL_Texture* debugBlock = window.loadTexture(DEBUG_BLOCK_PATH);
     // Ground sprite spawner   
-    std::vector<Entity> levelEntities;
 
-    for(int x = 0;x < WIDTH/2; x += 32)
-    {
-        {
-        Entity block(Vector2f(x, (HEIGHT - 64)/2), grassBlock);
-        levelEntities.push_back(block);
-        }
-    }
+    Ground level0(Vector2f(0, (HEIGHT - 64)/2), 20, grassBlock);
+    Ground level1(Vector2f(64, ((HEIGHT - 64)/2) - 32) , 5, grassBlock);
 
     Player player(Vector2f(0, 0), playerTexture);
       
@@ -43,6 +39,7 @@ int main(int argx, char *args[])
     // Game Loop
     bool run = true;
     SDL_Event event;
+    int vel = 1;
 
     while(run) 
     {
@@ -53,10 +50,25 @@ int main(int argx, char *args[])
         }
 
         window.clear();
-        for(Entity& e : levelEntities)
+        for(Entity& g : level0.getTiles())
         {
-            window.render(e);
+            window.render(g);
         }
+        for(Entity& g : level1.getTiles())
+        {
+            window.render(g);
+        }
+
+        if (player.getPos().x == (WIDTH/2)-32 && vel == 1)
+        {
+            vel *= -1;
+        }else if (player.getPos().x == 0 && vel == -1)
+        {
+            vel *= -1;
+        }
+        
+        player.move(Vector2f(vel, 0));
+
         window.render(player);
         window.display();
     }
