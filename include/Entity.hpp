@@ -13,6 +13,7 @@ public:
     SDL_Rect getCurrentFrame();
     void setX(float p_x);
     void setY(float p_y);
+    void setPos(Vector2f p_pos);
 private:
     Vector2f pos;
     SDL_Rect currentFrame;

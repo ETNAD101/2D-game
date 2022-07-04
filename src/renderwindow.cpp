@@ -15,7 +15,7 @@ RenderWindow::RenderWindow(const char* p_title, int p_w, int p_h)
 		std::cout << "window failed to init, Error: " << SDL_GetError() << std::endl;
 	}
 
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	
 }
 

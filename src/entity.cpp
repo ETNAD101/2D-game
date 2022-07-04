@@ -35,3 +35,8 @@ void Entity::setY(float p_y)
 {
     pos.y = p_y;
 }
+
+void Entity::setPos(Vector2f p_pos)
+{
+    pos = p_pos;
+}

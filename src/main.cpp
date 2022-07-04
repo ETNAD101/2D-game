@@ -10,9 +10,6 @@
 #include "Player.hpp"
 #include "Ground.hpp"
 
-
-
-
 int main(int argx, char *args[])
 {
     // Window Initialization
@@ -27,48 +24,66 @@ int main(int argx, char *args[])
     
     SDL_Texture* grassBlock = window.loadTexture(GROUND_TEXTURE_PATH);
     SDL_Texture* playerTexture = window.loadTexture(PLAYER_TEXTURE_PATH);
-    //SDL_Texture* debugBlock = window.loadTexture(DEBUG_BLOCK_PATH);
+    // SDL_Texture* debugBlock = window.loadTexture(DEBUG_BLOCK_PATH);
     // Ground sprite spawner   
+    std::vector<Ground> level ={Ground(Vector2f(0, 328), 20, grassBlock), 
+                                Ground(Vector2f(64, 296), 5, grassBlock),
+                                Ground(Vector2f(288, 296), 3, grassBlock),
+                                Ground(Vector2f(96, 264), 3, grassBlock)
+                                };
 
-    Ground level0(Vector2f(0, (HEIGHT - 64)/2), 20, grassBlock);
-    Ground level1(Vector2f(64, ((HEIGHT - 64)/2) - 32) , 5, grassBlock);
-
-    Player player(Vector2f(0, 0), playerTexture);
+    Player player(Vector2f(0, 0), Vector2f(0,0), playerTexture);
       
-
     // Game Loop
     bool run = true;
     SDL_Event event;
-    int vel = 1;
 
     while(run) 
     {
         while(SDL_PollEvent(&event))
-        {
-            if(event.type == SDL_QUIT)
+        {   
+            switch(event.type)
+            {
+            case SDL_QUIT:
                 run = false;
+                break;
+
+            case SDL_MOUSEBUTTONDOWN:
+                player.setVelocity(Vector2f(0, 0));
+                player.setX(0);
+                player.setY(0);
+                break;
+
+            case SDL_KEYDOWN:
+                if(event.key.keysym.sym == SDLK_a)
+                {
+                    player.setVelocity(Vector2f(-3, player.getVelocity().y));
+                }
+                if(event.key.keysym.sym == SDLK_d)
+                {
+                    player.setVelocity(Vector2f(3, player.getVelocity().y));
+                }
+                if(event.key.keysym.sym == SDLK_SPACE)
+                {
+                    player.setVelocity(Vector2f(player.getVelocity().x, 10));
+                }
+                break;
+
+            case SDL_KEYUP:
+                player.setVelocity(Vector2f(0, player.getVelocity().y));
+            }
         }
 
         window.clear();
-        for(Entity& g : level0.getTiles())
+        for(Ground& l : level)
         {
-            window.render(g);
-        }
-        for(Entity& g : level1.getTiles())
-        {
-            window.render(g);
-        }
-
-        if (player.getPos().x == (WIDTH/2)-32 && vel == 1)
-        {
-            vel *= -1;
-        }else if (player.getPos().x == 0 && vel == -1)
-        {
-            vel *= -1;
+            for(Entity& g : l.getTiles())
+            {
+                window.render(g);
+            }
         }
         
-        player.move(Vector2f(vel, 0));
-
+        player.update();
         window.render(player);
         window.display();
     }
