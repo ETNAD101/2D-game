@@ -42,34 +42,40 @@ int main(int argx, char *args[])
     {
         while(SDL_PollEvent(&event))
         {   
-            switch(event.type)
+
+            if(event.type == SDL_QUIT)
             {
-            case SDL_QUIT:
                 run = false;
                 break;
+            }
 
-            case SDL_MOUSEBUTTONDOWN:
+            if(event.type == SDL_MOUSEBUTTONDOWN)
+            {
                 player.setVelocity(Vector2f(0, 0));
                 player.setX(0);
                 player.setY(0);
-                break;
+            }
 
-            case SDL_KEYDOWN:
-                if(event.key.keysym.sym == SDLK_a)
+            if(event.type == SDL_KEYDOWN)
+            {
+                switch(event.key.keysym.sym)
                 {
+                case SDLK_a:
                     player.setVelocity(Vector2f(-3, player.getVelocity().y));
-                }
-                if(event.key.keysym.sym == SDLK_d)
-                {
-                    player.setVelocity(Vector2f(3, player.getVelocity().y));
-                }
-                if(event.key.keysym.sym == SDLK_SPACE)
-                {
-                    player.setVelocity(Vector2f(player.getVelocity().x, 10));
-                }
-                break;
+                    break;
 
-            case SDL_KEYUP:
+                case SDLK_d:
+                    player.setVelocity(Vector2f(3, player.getVelocity().y));
+                    break;
+
+                case SDLK_SPACE:
+                    player.setVelocity(Vector2f(player.getVelocity().x, -10));
+                    break;
+                }
+            }
+            
+            if(event.type == SDL_KEYUP)
+            {
                 player.setVelocity(Vector2f(0, player.getVelocity().y));
             }
         }
